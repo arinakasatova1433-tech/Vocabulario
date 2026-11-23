@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>(function(){function fmt(a){if(a instanceof Error)return a.message;if(typeof a==="object"&&a!==null){try{return JSON.stringify(a)}catch(e){return String(a)}}return String(a)}function send(t,m,l){try{parent.postMessage({__stc:1,type:t,msg:m,line:l},"*")}catch(e){}}["log","info","warn","error"].forEach(function(m){var o=console[m];console[m]=function(){send(m,Array.prototype.map.call(arguments,fmt).join(" "));if(o)o.apply(console,arguments)}});window.addEventListener("error",function(e){send("error",e.message,e.lineno)});window.addEventListener("unhandledrejection",function(e){send("error","Promise: "+fmt(e.reason))});})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulario: Relaciones y Personalidad</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-color: #fcf8f2;
+            --card-bg: #ffffff;
+            --text-main: #4a4a4a;
+            --text-muted: #888888;
+            --accent-green: #a3c9a8;
+            --accent-green-dark: #7da883;
+            --accent-beige: #e8dbce;
+            --line-color: #dcdcdc;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            color: #5c4d4d;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0;
+        }
+
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .word-row {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--accent-beige);
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 500px) {
+            .word-row {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px 20px;
+            }
+        }
+
+        .word-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .checkbox-container {
+            position: relative;
+            cursor: pointer;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 22px;
+            width: 22px;
+            background-color: #f0f0f0;
+            border: 2px solid var(--line-color);
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-container:hover input ~ .checkmark {
+            border-color: var(--accent-green-dark);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--accent-green);
+            border-color: var(--accent-green);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .word-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #3d3d3d;
+            transition: color 0.3s ease;
+            position: relative;
+            word-break: break-word;
+        }
+
+        .word-text::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 1px;
+            background-color: #a0a0a0;
+            transition: width 0.3s ease;
+        }
+
+        .checkbox-container input:checked ~ .word-text {
+            color: var(--text-muted);
+        }
+        
+        .checkbox-container input:checked ~ .word-text::after {
+            width: 100%;
+        }
+
+        .word-right {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding-left: 34px;
+        }
+
+        @media (min-width: 500px) {
+            .word-right {
+                padding-left: 0;
+                justify-content: flex-end;
+            }
+        }
+
+        .translation-text {
+            font-size: 0.95rem;
+            color: var(--accent-green-dark);
+            font-weight: 700;
+            opacity: 0;
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            text-align: right;
+            display: none;
+        }
+
+        @media (min-width: 500px) {
+            .translation-text {
+                transform: translateX(10px);
+                min-width: 120px;
+            }
+        }
+
+        .translation-text.show {
+            display: block;
+            opacity: 1;
+            transform: translate(0);
+        }
+
+        .btn-translate {
+            background-color: var(--accent-beige);
+            color: #7a6a5a;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .btn-translate:hover, .btn-translate.active {
+            background-color: var(--accent-green);
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Mi Vocabulario </h1>
+        </header>
+
+        <div class="list-container" id="word-list">
+            <!-- Слова будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Список слов. Inesperado на месте, Inexperado удален.
+        const wordsData = [
+            { es: "Cotillear", ru: "Сплетничать" },
+            { es: "Bromear", ru: "Шутить, подкалывать" },
+            { es: "Equivocarse", ru: "Ошибаться" },
+            { es: "Ocultar", ru: "Скрывать" },
+            { es: "Merecer", ru: "Заслуживать" },
+            { es: "Prometer", ru: "Обещать" },
+            { es: "Desarrollar", ru: "Развивать" },
+            { es: "Evitar", ru: "Избегать" },
+            { es: "Acordarse", ru: "Помнить" },
+            { es: "Hacer pistas", ru: "Давать подсказки / намекать" },
+            { es: "Nefando", ru: "Мерзкий, отвратительный" },
+            { es: "Asqueroso", ru: "Отвратительный, противный" },
+            { es: "Sabaduría / Sabiduría", ru: "Мудрость" },
+            { es: "Aterrador", ru: "Устрашающий" },
+            { es: "Débil", ru: "Слабый" },
+            { es: "Inmaduro", ru: "Незрелый" },
+            { es: "Maduro", ru: "Зрелый" },
+            { es: "Chulo", ru: "Наглый, самодовольный" },
+            { es: "Cariño", ru: "Нежность, ласка" },
+            { es: "Corresponder al cariño", ru: "Отвечать взаимностью" },
+            { es: "Consagrarse", ru: "Посвящать себя" },
+            { es: "Cumplir una promesa", ru: "Сдерживать обещание" },
+            { es: "Sentirse culpable", ru: "Чувствовать вину" },
+            { es: "La presión social", ru: "Социальное давление" },
+            { es: "Aprovechar el tiempo al máximo", ru: "Использовать время по максимуму" },
+            { es: "Perder el tiempo", ru: "Тратить время впустую" },
+            { es: "Ser muy exigente con uno mismo", ru: "Быть требовательным к себе" },
+            { es: "Desconectar de la rutina", ru: "Отключаться от рутины" },
+            { es: "Soler + infinitivo", ru: "Иметь обыкновение" },
+            { es: "Tener ganas de", ru: "Иметь желание" },
+            { es: "Me hace sentir", ru: "Заставляет меня чувствовать" },
+            { es: "Rendir", ru: "Справляться (с работой)" },
+            { es: "Alcanzar la calidad", ru: "Достигать качества" },
+            { es: "Complacer a los demás", ru: "Угождать другим" },
+            { es: "Decepcionar", ru: "Разочаровывать" },
+            { es: "Ritmo frenético", ru: "Бешеный ритм" },
+            { es: "Caótico", ru: "Хаотичный" },
+            { es: "Inquietud", ru: "Беспокойство" },
+            { es: "Cambiar el chip", ru: "Сменить настрой" },
+            { es: "Bajar el ritmo", ru: "Сбавить темп" },
+            { es: "Quitarse la máscara", ru: "Снять маску" },
+            { es: "Salirse del personaje", ru: "Выйти из роли" },
+            { es: "Frenar", ru: "Сдерживать, тормозить" },
+            { es: "Quejarse", ru: "Жаловаться" },
+            { es: "Afrentar el desafío", ru: "Принять вызов" },
+            { es: "Falta de respeto", ru: "Неуважение" },
+            { es: "Resiliencia", ru: "Устойчивость, жизнестойкость" },
+            { es: "Sonreír", ru: "Улыбаться" },
+            { es: "Inesperado", ru: "Неожиданный" }
+        ];
+
+        const container = document.getElementById('word-list');
+
+        wordsData.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = 'word-row';
+
+            row.innerHTML = `
+                <div class="word-left">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="check-${index}">
+                        <span class="checkmark"></span>
+                    </label>
+                    <span class="word-text" id="text-${index}">${item.es}</span>
+                </div>
+                <div class="word-right">
+                    <span class="translation-text" id="trans-${index}">${item.ru}</span>
+                    <button class="btn-translate" id="btn-${index}" onclick="toggleTranslation(${index})">тык 👆</button>
+                </div>
+            `;
+
+            container.appendChild(row);
+        });
+
+        function toggleTranslation(index) {
+            const transElement = document.getElementById(`trans-${index}`);
+            const btnElement = document.getElementById(`btn-${index}`);
+            
+            transElement.classList.toggle('show');
+            btnElement.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
